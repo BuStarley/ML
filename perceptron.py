@@ -1,15 +1,15 @@
 import numpy as np
 
 class Perceptron:
-    def init(self, eta=0.01, n_iter=100, random_state=1):
+    def __init__(self, eta=0.01, n_iter=100, random_state=1):
         self.eta = eta
         self.n_iter= n_iter
         self.random_state = random_state
     
-    def Fit(self, x, y):
+    def fit(self, x, y):
         rgen = np.random.RandomState(self.random_state)
         self.w = rgen.normal(loc=0.0, scale=0.01, size=x.shape[1])
-        self.b = np.float32(0.0)
+        self.b = np.float_(0.0)
         self.errors = []
         
         for _ in range(self.n_iter):
@@ -17,7 +17,7 @@ class Perceptron:
             for xi, target in zip(x,y):
                 update = self.eta * (target - self.predict(xi))
                 self.w += update * xi
-                self.y += update
+                self.b += update
                 errors += int(update != 0.0)
             self.errors.append(errors)
         return self
