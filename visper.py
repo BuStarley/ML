@@ -1,4 +1,3 @@
-import os
 from perceptron import Perceptron
 import numpy as np
 import matplotlib.pyplot as plt
