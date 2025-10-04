@@ -32,13 +32,14 @@ class AdalineCD:
     def predict(self, x):
         return np.where(self.activation(self.net_input(x)) >= 0.5, 1, 0)
 
+
 class AdalineSCD:
     def __init__(self, eta=0.01, n_iter=10,
                  shuffle=True, random_state=None):
         self.eta = eta
         self.n_iter = n_iter
         self.random_state = random_state
-        self.shuffle = shuffle
+        self.shuffle_ = shuffle
         self.w_initialized = False
     
     def fit(self, x, y):
@@ -72,3 +73,20 @@ class AdalineSCD:
         self.w = self.rgen.normal(loc=0.0, scale=0.01, size=m)
         self.b = np.float_(0.0)
         self.w_initialized = True
+    
+    def update_weights(self, xi, target):
+        output = self.activation(self.net_input(xi))
+        error = (target - output)
+        self.w += self.eta * 2.0 * xi * (error)
+        self.b += self.eta * 2.0 * error
+        loss = error**2
+        return loss
+    
+    def net_input(self, x):
+        return np.dot(x, self.w) + self.b
+    
+    def activation(self, x):
+        return x
+    
+    def predict(self, x):
+        return np.where(self.activation(self.net_input(x)) >= 0.5, 1, 0)
